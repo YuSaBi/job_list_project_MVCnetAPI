@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using StajTest_2.Models;
+using StajTest_2.Manager;
 
 namespace StajTest_2.Controllers
 {
@@ -79,6 +80,22 @@ namespace StajTest_2.Controllers
                 Con.Close();
             }
             return result;
+        }
+
+        [HttpPost]
+        [Route("userRegister_SqlManager")]
+        public Response UserRegisterSql(string UserName, string UserPassword)
+        {
+            Response resp = new Response();
+
+            User user = new User();
+            user.UserName = UserName;
+            user.UserPassword = UserPassword;
+
+            SqlManager sql = new SqlManager();
+            resp = sql.AddUser(user);
+
+            return resp;
         }
 
         [HttpPost]
