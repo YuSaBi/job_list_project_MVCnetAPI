@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using StajTest_2.Models;
 using StajTest_2.Manager;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StajTest_2.Controllers
 {
@@ -50,6 +51,18 @@ namespace StajTest_2.Controllers
                 Con.Close();
             }
             return X;
+        }
+
+        [HttpPost]
+        [Route("viewJobs_SqlManager")]
+        public jobListMaster jobGetirSqlMng(int UserID)
+        {
+            jobListMaster jobListMaster = new jobListMaster();
+            SqlManager sql = new SqlManager();
+
+            jobListMaster = sql.GetJob(UserID);
+
+            return jobListMaster;
         }
 
         [HttpPost]
@@ -166,6 +179,18 @@ namespace StajTest_2.Controllers
                 Con.Close();
             }
             return result;
+        }
+
+        [HttpPost]
+        [Route("deleteJob_SqlManager")]
+        public Response DeleteJobSql(int JobID)
+        {
+            Response response = new Response();
+
+            SqlManager sql = new SqlManager();
+            response = sql.DelJob(JobID);
+
+            return response;
         }
 
         [HttpPost]
