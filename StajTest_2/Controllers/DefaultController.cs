@@ -14,10 +14,14 @@ namespace StajTest_2.Controllers
     {
         public string cs = "Data Source=DESKTOP-SN2L41M;Initial Catalog=StajProje_1; Integrated Security=True";// appsetting.json dan çekilecek
 
+        [Authorize]
         [HttpPost]
         [Route("viewJobs")]
         public jobListMaster JobGetir(int UserID)
         {
+
+
+
             jobListMaster X = new jobListMaster();
             using (SqlConnection Con = new SqlConnection(cs))// SqlConnection bulamazsa SqlClient Expension yüklenmeli
             {
@@ -53,6 +57,7 @@ namespace StajTest_2.Controllers
             return X;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("viewJobs_SqlManager")]
         public jobListMaster jobGetirSqlMng(int UserID)
@@ -65,6 +70,7 @@ namespace StajTest_2.Controllers
             return jobListMaster;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("userRegister")]
         public int UserRegister(string UserName, string UserPassword)
@@ -95,6 +101,7 @@ namespace StajTest_2.Controllers
             return result;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("userRegister_SqlManager")]
         public Response UserRegisterSql(string UserName, string UserPassword)
@@ -111,6 +118,7 @@ namespace StajTest_2.Controllers
             return resp;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("userLogin")]
         public int UserLogin(string UserName, string UserPassword)
@@ -151,6 +159,7 @@ namespace StajTest_2.Controllers
             return UserID;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("deleteJob")]
         public int DeleteJob(int UserID)
@@ -181,6 +190,7 @@ namespace StajTest_2.Controllers
             return result;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("deleteJob_SqlManager")]
         public Response DeleteJobSql(int JobID)
@@ -193,6 +203,7 @@ namespace StajTest_2.Controllers
             return response;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("saveJob")]
         public int SaveJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)

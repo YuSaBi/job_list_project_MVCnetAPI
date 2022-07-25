@@ -1,4 +1,4 @@
-namespace StajTest_2
+namespace StajTest_2.Manager
 {
     public class WeatherForecast
     {
