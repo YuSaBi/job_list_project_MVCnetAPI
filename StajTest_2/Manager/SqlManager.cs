@@ -82,6 +82,28 @@ namespace StajTest_2.Manager
             return response;
         }
 
+        public Response UserLastLoginUpdate(int UserID)
+        {
+            Response resp = new Response();
+
+            try
+            {
+                using (var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("@UserID", UserID);
+
+                    resp = connection.Query<Response>("SP_Users_LastLoginUpdate", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                resp.ResponseMsg = ex.Message;
+            }
+
+            return resp;
+        }
 
 
 

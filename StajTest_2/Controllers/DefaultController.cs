@@ -130,13 +130,26 @@ namespace StajTest_2.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("SaveJob_Manager")]
+        [Route("saveJob_Manager")]
         public Response SaveJobMng(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
         {
             Response resp = new Response();
             SqlManager sql = new SqlManager();
             
             resp = sql.AddJob(UserID, Baslik, HarcananSure, Detay, CustomerID, Durum, PriorityID);
+
+            return resp;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("userLastLoginUpdate_Manager")]
+        public Response UserLastLoginUpdate(int UserID)
+        {
+            Response resp = new Response();
+            SqlManager sql = new SqlManager();
+
+            resp = sql.UserLastLoginUpdate(UserID);
 
             return resp;
         }
