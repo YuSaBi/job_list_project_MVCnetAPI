@@ -19,6 +19,7 @@ namespace StajTest_2.Controllers
         [Route("viewJobs")]
         public jobListMaster JobGetir(int UserID)
         {
+            int ResponseCode;
             jobListMaster X = new jobListMaster();
             using (SqlConnection Con = new SqlConnection(cs))// SqlConnection bulamazsa SqlClient Expension yüklenmeli
             {
@@ -33,28 +34,50 @@ namespace StajTest_2.Controllers
                 Con.Open();
 
                 //var connection = new SqlConnection()
-
+                
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())// okuduğumuz verileri oluşturduğumuz değişkene atıyoruz
                 {
-                    Jobs job = new Jobs();// tekli veri
-                    job.Baslik = dr["Baslik"].ToString();
-                    job.Detay = dr["Detay"].ToString();
-                    job.Gun = Convert.ToDateTime(dr["Gun"]);
-                    job.HarcananSure = Convert.ToInt32(dr["HarcananSure"]);
-                    job.Musteri = dr["CustomerName"].ToString();
-                    job.Durum = dr["DurumAd"].ToString();
-                    job.Oncelik = dr["PriorityName"].ToString();
-                    X.ResponseCode = dr["ResponseCode"].ToString();
-                    X.ResponseMsg = dr["ResponseMsg"].ToString();
-
-                    X.Jobslist.Add(job);
+                    if (Convert.ToInt32(dr["ResponseCode"])!=2)
+                    {
+                        Jobs job = new Jobs();// tekli veri
+                        job.Baslik = dr["Baslik"].ToString();
+                        job.Detay = dr["Detay"].ToString();
+                        job.Gun = Convert.ToDateTime(dr["Gun"]);
+                        job.HarcananSure = Convert.ToInt32(dr["HarcananSure"]);
+                        job.Musteri = dr["CustomerName"].ToString();
+                        job.Durum = dr["DurumAd"].ToString();
+                        job.Oncelik = dr["PriorityName"].ToString();
+                        X.ResponseCode = dr["ResponseCode"].ToString();
+                        X.ResponseMsg = dr["ResponseMsg"].ToString();
+                        X.Jobslist.Add(job);
+                    }
+                    else
+                    {
+                        X.ResponseCode = dr["ResponseCode"].ToString();
+                        X.ResponseMsg = dr["ResponseMsg"].ToString();
+                    }
+                    
                 }
                 dr.Close();
                 Con.Close();
             }
             return X;
         }
+
+        /*
+        [Authorize]
+        [HttpPost]
+        [Route("viewJobs_Manager")]
+        public jobListMaster JobGetirMng(int UserID)
+        {
+            jobListMaster jobListMaster = new jobListMaster();
+            SqlManager sql = new SqlManager();
+
+            jobListMaster = sql.ViewJobs(UserID);
+            return jobListMaster;
+        }
+        */
 
         [Authorize]
         [HttpPost]

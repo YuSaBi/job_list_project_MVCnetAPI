@@ -56,6 +56,29 @@ namespace StajTest_2.Manager
             return respUID;
         }
         
+        public jobListMaster ViewJobs(int UserID)
+        {
+            jobListMaster jobListMaster = new jobListMaster();
+            Jobs jobs = new Jobs();
+            try
+            {
+                using(var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("UserID", UserID);
+
+                    jobListMaster = connection.Query<jobListMaster>("SP_View", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                jobListMaster.ResponseMsg = ex.Message;
+            }
+
+            return jobListMaster;
+        }
+
         public Response AddJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
         {
             Response resp = new Response();
@@ -129,7 +152,7 @@ namespace StajTest_2.Manager
         }
 
 
-
+         
 
 
 
