@@ -30,29 +30,33 @@ namespace StajTest_2.Manager
             {
                 resp.ResponseMsg = ex.Message;
             }
-            
-
             return resp;
         }
         
-        public jobListMaster GetJob(int UserID)
+        public Response AddJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
         {
             Response resp = new Response();
-            jobListMaster jobListMaster = new jobListMaster();
-
-
-
             try
             {
+                using(var connection=new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("@UserID", UserID);
+                    param.Add("@Baslik", Baslik);
+                    param.Add("@HarcananSure", HarcananSure);
+                    param.Add("@Detay", Detay);
+                    param.Add("@CustomerID", CustomerID);
+                    param.Add("@DurumID", Durum);
+                    param.Add("@PriorityID", PriorityID);
 
+                    resp = connection.Query<Response>("SP_AddJob", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                }
             }
             catch (Exception ex)
             {
-
                 resp.ResponseMsg = ex.Message;
             }
-
-            return jobListMaster;
+            return resp;
         }
 
         public Response DelJob(int JobID)
@@ -77,5 +81,38 @@ namespace StajTest_2.Manager
 
             return response;
         }
+
+
+
+
+
+
+
+        /*
+        public jobListMaster GetJob(int UserID)
+        {
+            jobListMaster jobListMaster = new jobListMaster();
+
+            try
+            {
+                using (var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("UserID", UserID);
+
+                    jobListMaster.Jobslist = connection.Query<Jobs>("SP_View", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                jobListMaster.ResponseCode = "0";
+                jobListMaster.ResponseMsg = ex.Message;
+            }
+
+            return jobListMaster;
+        }
+        */
+
     }
 }

@@ -59,52 +59,8 @@ namespace StajTest_2.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("viewJobs_SqlManager")]
-        public jobListMaster jobGetirSqlMng(int UserID)
-        {
-            jobListMaster jobListMaster = new jobListMaster();
-            SqlManager sql = new SqlManager();
-
-            jobListMaster = sql.GetJob(UserID);
-
-            return jobListMaster;
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("userRegister")]
-        public int UserRegister(string UserName, string UserPassword)
-        {
-            int result = 2;
-
-            using (SqlConnection Con = new SqlConnection(cs))
-            {
-                SqlCommand cmd = new SqlCommand("SP_Register", Con);// procedure ismi ve bağlantı girildi
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Clear();
-
-                List<SqlParameter> list = new List<SqlParameter>();
-                list.Add(new SqlParameter("@UserName", UserName));
-                list.Add(new SqlParameter("@UserPassword", UserPassword));
-                cmd.Parameters.AddRange(list.ToArray<SqlParameter>());// oluşturulan parametre sql komutuna gönderiliyor
-
-                Con.Open();
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())// okuduğumuz verileri oluşturduğumuz değişkene atıyoruz
-                {
-                    result = Convert.ToInt32(dr["Result"]);
-                }
-                dr.Close();
-                Con.Close();
-            }
-            return result;
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("userRegister_SqlManager")]
-        public Response UserRegisterSql(string UserName, string UserPassword)
+        [Route("userRegister_Manager")]
+        public Response UserRegisterMng(string UserName, string UserPassword)
         {
             Response resp = new Response();
 
@@ -161,6 +117,78 @@ namespace StajTest_2.Controllers
 
         [Authorize]
         [HttpPost]
+        [Route("deleteJob_Manager")]
+        public Response DeleteJobMng(int JobID)
+        {
+            Response response = new Response();
+            SqlManager sql = new SqlManager();
+
+            response = sql.DelJob(JobID);
+
+            return response;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("SaveJob_Manager")]
+        public Response SaveJobMng(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
+        {
+            Response resp = new Response();
+            SqlManager sql = new SqlManager();
+            
+            resp = sql.AddJob(UserID, Baslik, HarcananSure, Detay, CustomerID, Durum, PriorityID);
+
+            return resp;
+        }
+
+
+
+
+
+
+
+
+
+
+        //[Authorize]
+        //[HttpPost]
+        //[Route("saveJob")]
+        //public int SaveJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
+        //{
+        //    int result = 2;
+        //    using (SqlConnection Con = new SqlConnection(cs))
+        //    {
+        //        SqlCommand cmd = new SqlCommand("SP_AddJob", Con);// procedure ismi ve bağlantı girildi
+        //        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //        cmd.Parameters.Clear();
+
+        //        List<SqlParameter> list = new List<SqlParameter>();
+        //        list.Add(new SqlParameter("@UserID", UserID));
+        //        list.Add(new SqlParameter("@Baslik", Baslik));
+        //        list.Add(new SqlParameter("@HarcananSure", HarcananSure));
+        //        list.Add(new SqlParameter("@Detay", Detay));
+        //        list.Add(new SqlParameter("@CustomerID", CustomerID));
+        //        list.Add(new SqlParameter("@DurumID", Durum));
+        //        list.Add(new SqlParameter("@PriorityID", PriorityID));
+        //        cmd.Parameters.AddRange(list.ToArray<SqlParameter>());// oluşturulan parametre sql komutuna gönderiliyor
+
+        //        Con.Open();
+
+        //        SqlDataReader dr = cmd.ExecuteReader();
+        //        while (dr.Read())
+        //        {
+        //            result = Convert.ToInt32(dr["RESULT"]);
+        //        }
+        //        dr.Close();
+        //        Con.Close();
+        //    }
+        //    return result;
+        //}
+
+
+        /*
+        [Authorize]
+        [HttpPost]
         [Route("deleteJob")]
         public int DeleteJob(int UserID)
         {
@@ -189,55 +217,55 @@ namespace StajTest_2.Controllers
             }
             return result;
         }
+        */
 
+        /*
         [Authorize]
         [HttpPost]
-        [Route("deleteJob_SqlManager")]
-        public Response DeleteJobSql(int JobID)
+        [Route("viewJobs_SqlManager")]
+        public jobListMaster jobGetirSqlMng(int UserID)
         {
-            Response response = new Response();
-
+            jobListMaster jobListMaster = new jobListMaster();
             SqlManager sql = new SqlManager();
-            response = sql.DelJob(JobID);
 
-            return response;
+            jobListMaster = sql.GetJob(UserID);
+
+            return jobListMaster;
         }
+        */
 
+        /*
         [Authorize]
         [HttpPost]
-        [Route("saveJob")]
-        public int SaveJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
+        [Route("userRegister")]
+        public int UserRegister(string UserName, string UserPassword)
         {
             int result = 2;
+
             using (SqlConnection Con = new SqlConnection(cs))
             {
-                SqlCommand cmd = new SqlCommand("SP_AddJob", Con);// procedure ismi ve bağlantı girildi
+                SqlCommand cmd = new SqlCommand("SP_Register", Con);// procedure ismi ve bağlantı girildi
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.Clear();
 
                 List<SqlParameter> list = new List<SqlParameter>();
-                list.Add(new SqlParameter("@UserID", UserID));
-                list.Add(new SqlParameter("@Baslik", Baslik));
-                list.Add(new SqlParameter("@HarcananSure", HarcananSure));
-                list.Add(new SqlParameter("@Detay", Detay));
-                list.Add(new SqlParameter("@CustomerID", CustomerID));
-                list.Add(new SqlParameter("@DurumID", Durum));
-                list.Add(new SqlParameter("@PriorityID", PriorityID));
+                list.Add(new SqlParameter("@UserName", UserName));
+                list.Add(new SqlParameter("@UserPassword", UserPassword));
                 cmd.Parameters.AddRange(list.ToArray<SqlParameter>());// oluşturulan parametre sql komutuna gönderiliyor
 
                 Con.Open();
 
                 SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                while (dr.Read())// okuduğumuz verileri oluşturduğumuz değişkene atıyoruz
                 {
-                    result = Convert.ToInt32(dr["RESULT"]);
+                    result = Convert.ToInt32(dr["Result"]);
                 }
                 dr.Close();
                 Con.Close();
             }
             return result;
         }
-
+        */
 
     }
 }
