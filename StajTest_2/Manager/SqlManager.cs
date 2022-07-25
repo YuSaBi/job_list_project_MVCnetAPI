@@ -32,6 +32,29 @@ namespace StajTest_2.Manager
             }
             return resp;
         }
+
+        public ResponseUID LogIn(User item)
+        {
+            ResponseUID respUID = new ResponseUID();
+            try
+            {
+                using(var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("UserName", item.UserName);
+                    param.Add("UserPassword", item.UserPassword);
+
+                    respUID = connection.Query<ResponseUID>("SP_Login", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                respUID.ResponseMsg = ex.Message;
+            }
+
+            return respUID;
+        }
         
         public Response AddJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
         {

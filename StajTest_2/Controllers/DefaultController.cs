@@ -19,9 +19,6 @@ namespace StajTest_2.Controllers
         [Route("viewJobs")]
         public jobListMaster JobGetir(int UserID)
         {
-
-
-
             jobListMaster X = new jobListMaster();
             using (SqlConnection Con = new SqlConnection(cs))// SqlConnection bulamazsa SqlClient Expension yüklenmeli
             {
@@ -48,6 +45,8 @@ namespace StajTest_2.Controllers
                     job.Musteri = dr["CustomerName"].ToString();
                     job.Durum = dr["DurumAd"].ToString();
                     job.Oncelik = dr["PriorityName"].ToString();
+                    X.ResponseCode = dr["ResponseCode"].ToString();
+                    X.ResponseMsg = dr["ResponseMsg"].ToString();
 
                     X.Jobslist.Add(job);
                 }
@@ -63,7 +62,6 @@ namespace StajTest_2.Controllers
         public Response UserRegisterMng(string UserName, string UserPassword)
         {
             Response resp = new Response();
-
             User user = new User();
             user.UserName = UserName;
             user.UserPassword = UserPassword;
@@ -74,45 +72,21 @@ namespace StajTest_2.Controllers
             return resp;
         }
 
+
         [Authorize]
         [HttpPost]
-        [Route("userLogin")]
-        public int UserLogin(string UserName, string UserPassword)
+        [Route("UserLogin_Manager")]
+        public ResponseUID UserLoginMng(string UserName, string UserPassword)
         {
-            int result = 3;
-            int UserID = 0;
+            ResponseUID response = new ResponseUID();
+            SqlManager sql = new SqlManager();
+            User item = new User();
+            item.UserName = UserName;
+            item.UserPassword = UserPassword;
 
-            using (SqlConnection Con = new SqlConnection(cs))
-            {
-                SqlCommand cmd = new SqlCommand("SP_Login", Con);// procedure ismi ve bağlantı girildi
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Clear();
+            response = sql.LogIn(item);
 
-                List<SqlParameter> list = new List<SqlParameter>();
-                list.Add(new SqlParameter("@UserName", UserName));
-                list.Add(new SqlParameter("@UserPassword", UserPassword));
-                cmd.Parameters.AddRange(list.ToArray<SqlParameter>());// oluşturulan parametre sql komutuna gönderiliyor
-
-                Con.Open();
-
-                
-                SqlDataReader dr = cmd.ExecuteReader();
-                
-                
-                while (dr.Read())
-                {
-                    result = Convert.ToInt32(dr["RESULT"]);
-                    if (result == 1)
-                    {
-                        UserID = Convert.ToInt32(dr["USERID"]);
-                    }
-
-                }
-                dr.Close();
-                Con.Close();
-                
-            }
-            return UserID;
+            return response;
         }
 
         [Authorize]
@@ -161,6 +135,48 @@ namespace StajTest_2.Controllers
 
 
 
+        /*
+        [Authorize]
+        [HttpPost]
+        [Route("userLogin")]
+        public int UserLogin(string UserName, string UserPassword)
+        {
+            int result = 3;
+            int UserID = 0;
+
+            using (SqlConnection Con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand("SP_Login", Con);// procedure ismi ve bağlantı girildi
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Clear();
+
+                List<SqlParameter> list = new List<SqlParameter>();
+                list.Add(new SqlParameter("@UserName", UserName));
+                list.Add(new SqlParameter("@UserPassword", UserPassword));
+                cmd.Parameters.AddRange(list.ToArray<SqlParameter>());// oluşturulan parametre sql komutuna gönderiliyor
+
+                Con.Open();
+
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+
+                while (dr.Read())
+                {
+                    result = Convert.ToInt32(dr["RESULT"]);
+                    if (result == 1)
+                    {
+                        UserID = Convert.ToInt32(dr["USERID"]);
+                    }
+
+                }
+                dr.Close();
+                Con.Close();
+
+            }
+            return UserID;
+        }
+        */
 
 
         //[Authorize]
