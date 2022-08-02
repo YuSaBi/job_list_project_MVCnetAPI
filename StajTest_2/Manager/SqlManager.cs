@@ -11,7 +11,8 @@ namespace StajTest_2.Manager
 {
     public class SqlManager
     {
-        public string cs = "Data Source=DESKTOP-SN2L41M;Initial Catalog=StajProje_1; Integrated Security=True";// appsetting.json dan çekilecek
+        public string cs = "Data Source=DESKTOP-SN2L41M;Database=StajProje_1;User Id=testt;Password=QWE123-asd456*;";
+        //public string cs = "Data Source=DESKTOP-SN2L41M;Initial Catalog=StajProje_1; Integrated Security=True";// appsetting.json dan çekilecek
         public Response AddUser(User item)
         {
             Response resp = new Response();
@@ -26,9 +27,19 @@ namespace StajTest_2.Manager
                     resp = connection.Query<Response>("SP_Register", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 }
             }
+            //catch(SqlException)
+            //{
+            //    LogManager log = new LogManager();
+            //    log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+            //        DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+            //    resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+            //    resp.ResponseCode = 300;
+            //}
             catch (Exception ex)
             {
-                resp.ResponseMsg = ex.Message;
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message + "\n");
+                resp.ResponseMsg = ex.Message;// Değiştirilecek
             }
             return resp;
         }
@@ -47,36 +58,21 @@ namespace StajTest_2.Manager
                     respUID = connection.Query<ResponseUID>("SP_Login", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 }
             }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+                    DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+                respUID.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                respUID.ResponseCode = 301;
+            }
             catch (Exception ex)
             {
-
-                respUID.ResponseMsg = ex.Message;
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message + "\n");
+                respUID.ResponseMsg = ex.Message;// Değiştirilecek
             }
-
             return respUID;
-        }
-        
-        public jobListMaster ViewJobs(int UserID)
-        {
-            jobListMaster jobListMaster = new jobListMaster();
-            Jobs jobs = new Jobs();
-            try
-            {
-                using(var connection = new SqlConnection(cs))
-                {
-                    var param = new DynamicParameters();
-                    param.Add("UserID", UserID);
-
-                    jobListMaster = connection.Query<jobListMaster>("SP_View", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
-                   
-                }
-            }
-            catch (Exception ex)
-            {
-                jobListMaster.ResponseMsg = ex.Message;
-            }
-
-            return jobListMaster;
         }
 
         public Response AddJob(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
@@ -98,17 +94,26 @@ namespace StajTest_2.Manager
                     resp = connection.Query<Response>("SP_AddJob", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 }
             }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+                    DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseCode = 301;
+            }
             catch (Exception ex)
             {
-                resp.ResponseMsg = ex.Message;
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message + "\n");
+                resp.ResponseMsg = ex.Message;// Değiştirilecek
             }
             return resp;
         }
 
         public Response DelJob(int JobID)
         {
-            Response response = new Response();
-
+            Response resp = new Response();
             try
             {
                 using(var connection = new SqlConnection(cs))
@@ -116,22 +121,29 @@ namespace StajTest_2.Manager
                     var param = new DynamicParameters();
                     param.Add("JobID", JobID);
 
-                    response=connection.Query<Response>("SP_DelJob", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    resp=connection.Query<Response>("SP_DelJob", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+                    DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseCode = 301;
             }
             catch (Exception ex)
             {
-
-                response.ResponseMsg = ex.Message;
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message + "\n");
+                resp.ResponseMsg = ex.Message;// Değiştirilecek
             }
-
-            return response;
+            return resp;
         }
 
         public Response UserLastLoginUpdate(int UserID)
         {
             Response resp = new Response();
-
             try
             {
                 using (var connection = new SqlConnection(cs))
@@ -142,17 +154,56 @@ namespace StajTest_2.Manager
                     resp = connection.Query<Response>("SP_Users_LastLoginUpdate", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 }
             }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+                    DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseCode = 301;
+            }
             catch (Exception ex)
             {
-
-                resp.ResponseMsg = ex.Message;
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message + "\n");
+                resp.ResponseMsg = ex.Message;// Değiştirilecek
             }
-
             return resp;
         }
 
+        public jobListMaster ViewJobs(int UserID)
+        {
+            jobListMaster jobListMaster = new jobListMaster();
+            try
+            {
+                using (var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("UserID", UserID);
 
-         
+                    jobListMaster = connection.Query<jobListMaster>("SP_View", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+                }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+                    DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+                jobListMaster.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                jobListMaster.ResponseCode = 301;
+            }
+            catch (Exception ex)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message + "\n");
+                jobListMaster.ResponseMsg = ex.Message;// Değiştirilecek
+            }
+            return jobListMaster;
+        }
+
+
+
 
 
 

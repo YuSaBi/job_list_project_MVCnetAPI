@@ -1,0 +1,83 @@
+28.07.2022 15:31:43
+Could not find a part of the path 'C:\Users\oguzc\source\repos\StajTest_2\StajTest_2\ccc\log.txt'.
+
+28.07.2022 15:36:04
+Could not find a part of the path 'C:\log\log'.
+
+28.07.2022 15:36:15
+Could not find a part of the path 'C:\log\log'.
+
+28.07.2022 15:40:41
+A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+
+28.07.2022 15:40:49
+Keyword not supported: 'adata source'.
+
+2.08.2022 10:17:33
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 10:18:05
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 10:38:32
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 10:58:45
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 10:59:15
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 10:59:43
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 10:59:56
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 11:00:20
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 11:00:23
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 11:03:34
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 11:57:30
+Baslik
+2.08.2022 12:01:29
+Baslik
+2.08.2022 12:01:45
+Baslik
+2.08.2022 12:01:57
+Baslik
+2.08.2022 12:03:07
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 12:03:53
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 12:04:47
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 12:05:41
+Keyword not supported: 'ddata source'.
+
+2.08.2022 12:05:41
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 12:05:54
+Keyword not supported: 'ddata source'.
+
+2.08.2022 12:14:09
+Veritabanı kaynaklı hata bulundu
+
+2.08.2022 12:17:54
+Keyword not supported: 'ddata source'.
+
+2.08.2022 12:18:05
+Keyword not supported: 'ddata source'.
+
+2.08.2022 12:19:04
+Veritabanı kaynaklı hata bulundu
+

@@ -12,9 +12,32 @@ namespace StajTest_2.Controllers
     [ApiController]
     public class DefaultController : ControllerBase
     {
-        public string cs = "Data Source=DESKTOP-SN2L41M;Initial Catalog=StajProje_1; Integrated Security=True";// appsetting.json dan çekilecek
+        public string cs = "Data Source=DESKTOP-SN2L41M;Database=StajProje_1;User Id=testt;Password=QWE123-asd456*;";
+        //public string cs2 = "Data Source=DESKTOP-SN2L41M;Initial Catalog=StajProje_1; Integrated Security=True";
 
         [Authorize]
+        [HttpGet]
+        [Route("getir")]
+        public User listling()
+        {
+            try
+            {
+                User user = new User();
+                user.UserName = "kullanıcı adı";
+                user.UserPassword = "Kulanıcı şifre";
+                return user;
+            }
+            catch (Exception ex)
+            {
+                User user = new User();
+                user.UserName = ex.Message;
+                user.UserPassword = ex.Message;
+                return user;
+            }
+            
+        }
+
+        //[Authorize]
         [HttpPost]
         [Route("viewJobs")]
         public jobListMaster JobGetir(int UserID)
@@ -25,42 +48,52 @@ namespace StajTest_2.Controllers
             {
                 SqlCommand cmd = new SqlCommand("SP_View", Con);// procedure ismi ve bağlantı girildi
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;// bir procedure oldugu için bunu SP olarak tipini belirliyoruz
-
-                SqlParameter parameter = new SqlParameter();// sql parametresi oluşturuluyor
-                parameter.ParameterName = "@UserID";// parametre adı giriliyor
-                parameter.Value = UserID;// parametre verileri giriliyor
-
-                cmd.Parameters.Add(parameter);// oluşturulan parametre sql komutuna gönderiliyor
-                Con.Open();
-
-                //var connection = new SqlConnection()
-                
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())// okuduğumuz verileri oluşturduğumuz değişkene atıyoruz
+                cmd.Parameters.AddWithValue("UserID",UserID);// oluşturulan parametre sql komutuna gönderiliyor
+                try
                 {
-                    if (Convert.ToInt32(dr["ResponseCode"])!=2)
+                    Con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())// okuduğumuz verileri oluşturduğumuz değişkene atıyoruz
                     {
-                        Jobs job = new Jobs();// tekli veri
-                        job.Baslik = dr["Baslik"].ToString();
-                        job.Detay = dr["Detay"].ToString();
-                        job.Gun = Convert.ToDateTime(dr["Gun"]);
-                        job.HarcananSure = Convert.ToInt32(dr["HarcananSure"]);
-                        job.Musteri = dr["CustomerName"].ToString();
-                        job.Durum = dr["DurumAd"].ToString();
-                        job.Oncelik = dr["PriorityName"].ToString();
-                        X.ResponseCode = dr["ResponseCode"].ToString();
-                        X.ResponseMsg = dr["ResponseMsg"].ToString();
-                        X.Jobslist.Add(job);
+                        if (Convert.ToInt32(dr["ResponseCode"]) != 2)
+                        {
+                            Jobs job = new Jobs();// tekli veri
+                            job.Baslik = dr["Baslik"].ToString();
+                            job.Detay = dr["Detay"].ToString();
+                            job.Gun = Convert.ToDateTime(dr["Gun"]);
+                            job.HarcananSure = Convert.ToInt32(dr["HarcananSure"]);
+                            job.Musteri = dr["CustomerName"].ToString();
+                            job.Durum = dr["DurumAd"].ToString();
+                            job.Oncelik = dr["PriorityName"].ToString();
+                            X.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
+                            X.ResponseMsg = dr["ResponseMsg"].ToString();
+                            X.Jobslist.Add(job);
+                        }
+                        else
+                        {
+                            X.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
+                            X.ResponseMsg = dr["ResponseMsg"].ToString();
+                        }
                     }
-                    else
-                    {
-                        X.ResponseCode = dr["ResponseCode"].ToString();
-                        X.ResponseMsg = dr["ResponseMsg"].ToString();
-                    }
-                    
+                    dr.Close();
+                    Con.Close();
                 }
-                dr.Close();
-                Con.Close();
+                catch (SqlException)
+                {
+                    LogManager log = new LogManager();
+                    log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"),
+                        DateTime.Now + "\n" + "Veritabanı kaynaklı hata bulundu" + "\n");
+                    X.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                    X.ResponseCode = 301;
+                }
+                catch (Exception ex)
+                {
+                    LogManager log = new LogManager();
+                    string logResult =log.logNotepad(Path.Combine(Environment.CurrentDirectory, "log.txt"), DateTime.Now + "\n" + ex.Message);
+                    X.ResponseMsg = ex.Message;
+                }
+
+                
             }
             return X;
         }
@@ -79,24 +112,43 @@ namespace StajTest_2.Controllers
         }
         */
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("userRegister_Manager")]
         public Response UserRegisterMng(string UserName, string UserPassword)
         {
+            
+            Response resp = new Response();
+            if (UserName == "" || UserPassword == "")
+            {
+                resp.ResponseMsg = "Zorunlu alanları doldurunuz";
+                resp.ResponseCode = 30;
+            }
+            else
+            {
+                User user = new User();
+                SqlManager sql = new SqlManager();
+
+                user.UserName = UserName;
+                user.UserPassword = UserPassword;
+
+                resp = sql.AddUser(user);
+            }
+            /*
             Response resp = new Response();
             User user = new User();
+            SqlManager sql = new SqlManager();
+
             user.UserName = UserName;
             user.UserPassword = UserPassword;
 
-            SqlManager sql = new SqlManager();
             resp = sql.AddUser(user);
-
+            */
             return resp;
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("UserLogin_Manager")]
         public ResponseUID UserLoginMng(string UserName, string UserPassword)
@@ -104,6 +156,7 @@ namespace StajTest_2.Controllers
             ResponseUID response = new ResponseUID();
             SqlManager sql = new SqlManager();
             User item = new User();
+
             item.UserName = UserName;
             item.UserPassword = UserPassword;
 
@@ -112,7 +165,7 @@ namespace StajTest_2.Controllers
             return response;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("deleteJob_Manager")]
         public Response DeleteJobMng(int JobID)
@@ -125,7 +178,7 @@ namespace StajTest_2.Controllers
             return response;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("saveJob_Manager")]
         public Response SaveJobMng(int UserID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
@@ -138,7 +191,7 @@ namespace StajTest_2.Controllers
             return resp;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("userLastLoginUpdate_Manager")]
         public Response UserLastLoginUpdate(int UserID)

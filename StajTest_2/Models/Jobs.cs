@@ -2,16 +2,16 @@
 {
     public class jobListMaster
     {
-        public string ResponseCode { get; set; }
+        public int ResponseCode { get; set; }
         public string ResponseMsg { get; set; }
         public List<Jobs> Jobslist { get; set; }
         public jobListMaster()
         {
-            ResponseCode = "";
-            ResponseMsg = "";
+            ResponseCode = 101;
+            ResponseMsg = "101";
             Jobslist = new List<Jobs>();
         }
-        public jobListMaster (string responseCode, string responseMsg, List<Jobs> jobslist)
+        public jobListMaster (int responseCode, string responseMsg, List<Jobs> jobslist)
         {
             ResponseCode = responseCode;
             ResponseMsg = responseMsg;
