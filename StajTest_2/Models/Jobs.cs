@@ -7,8 +7,7 @@
         public List<Jobs> Jobslist { get; set; }
         public jobListMaster()
         {
-            ResponseCode = 101;
-            ResponseMsg = "101";
+            ResponseMsg = "";
             Jobslist = new List<Jobs>();
         }
         public jobListMaster (int responseCode, string responseMsg, List<Jobs> jobslist)
