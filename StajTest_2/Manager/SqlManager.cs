@@ -22,11 +22,42 @@ namespace StajTest_2.Manager
             _configuration = config;
             cs = _configuration["ConnectionStrings:SqlDB_1"];
             logFileName = _configuration["LogManager:fileName"];// "log.txt"
-            logDbMessage = _configuration["LogManager:dbMessage"];// "Veritabanı kaynaklı hata bulundu"
+            logDbMessage = _configuration["LogManager:dbMessage"];// "Veritabani kaynakli hata bulundu"
             path = Path.Combine(Environment.CurrentDirectory, "log.txt");
         }
         //public string cs = "Data Source=DESKTOP-SN2L41M;Initial Catalog=StajProje_1; Integrated Security=True";// appsetting.json dan çekilecek
-        
+
+        public string TestLogIn(User item)
+        {
+            ResponseUID respUID = new ResponseUID();
+            try
+            {
+                using (var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("UserName", item.UserName);
+                    param.Add("UserPassword", item.UserPassword);
+
+                    respUID = connection.Query<ResponseUID>("SP_Login", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
+                respUID.ResponseMsg = "Veritabani kaynakli hata bulundu";
+                respUID.ResponseCode = 301;
+            }
+            catch (Exception ex)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + ex.Message + "\n");
+                respUID.ResponseMsg = ex.Message;// Değiştirilecek
+                respUID.ResponseCode = 299;
+            }
+            return respUID.ResponseMsg;
+        }
+
         public Response AddUser(User item)
         {
             Response resp = new Response();
@@ -45,7 +76,7 @@ namespace StajTest_2.Manager
             {
                 LogManager log = new LogManager();
                 log.logNotepad(path,DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
-                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseMsg = "Veritabani kaynakli hata bulundu";
                 resp.ResponseCode = 301;
             }
             catch (Exception ex)
@@ -76,7 +107,7 @@ namespace StajTest_2.Manager
             {
                 LogManager log = new LogManager();
                 log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
-                respUID.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                respUID.ResponseMsg = "Veritabani kaynakli hata bulundu";
                 respUID.ResponseCode = 301;
             }
             catch (Exception ex)
@@ -112,7 +143,7 @@ namespace StajTest_2.Manager
             {
                 LogManager log = new LogManager();
                 log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
-                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseMsg = "Veritabani kaynakli hata bulundu";
                 resp.ResponseCode = 301;
             }
             catch (Exception ex)
@@ -142,7 +173,7 @@ namespace StajTest_2.Manager
             {
                 LogManager log = new LogManager();
                 log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
-                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseMsg = "Veritabani kaynakli hata bulundu";
                 resp.ResponseCode = 301;
             }
             catch (Exception ex)
@@ -172,7 +203,7 @@ namespace StajTest_2.Manager
             {
                 LogManager log = new LogManager();
                 log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
-                resp.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                resp.ResponseMsg = "Veritabani kaynakli hata bulundu";
                 resp.ResponseCode = 301;
             }
             catch (Exception ex)
@@ -229,7 +260,7 @@ namespace StajTest_2.Manager
             {
                 LogManager log = new LogManager();
                 log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
-                jobListMaster.ResponseMsg = "Veritabanı kaynaklı hata bulundu";
+                jobListMaster.ResponseMsg = "Veritabani kaynakli hata bulundu";
                 jobListMaster.ResponseCode = 301;
             }
             catch (Exception ex)

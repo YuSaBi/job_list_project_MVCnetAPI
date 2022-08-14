@@ -24,7 +24,7 @@
                 write.WriteLine(body);
                 write.Close();
 
-                return "Log kayıt başarılı";
+                return "Log kayit basarili";
             }
             catch (Exception ex)
             {

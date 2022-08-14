@@ -29,4 +29,20 @@
         public string? Oncelik { get; set; }
 
     }
+
+    public class JobId
+    {
+        public int JobID { get; set; }
+    }
+
+    public class saveJob
+    {
+        public int UserID { get; set; }
+        public String? Baslik{ get; set; }
+        public int HarcananSure { get; set; }
+        public String? Detay { get; set; }
+        public int CustomerID { get; set; }
+        public int Durum { get; set; }
+        public int PriorityID { get; set; }
+    }
 }

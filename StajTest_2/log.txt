@@ -14,34 +14,34 @@ A network-related or instance-specific error occurred while establishing a conne
 Keyword not supported: 'adata source'.
 
 2.08.2022 10:17:33
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 10:18:05
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 10:38:32
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 10:58:45
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 10:59:15
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 10:59:43
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 10:59:56
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 11:00:20
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 11:00:23
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 11:03:34
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 11:57:30
 Baslik
@@ -52,25 +52,25 @@ Baslik
 2.08.2022 12:01:57
 Baslik
 2.08.2022 12:03:07
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 12:03:53
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 12:04:47
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 12:05:41
 Keyword not supported: 'ddata source'.
 
 2.08.2022 12:05:41
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 12:05:54
 Keyword not supported: 'ddata source'.
 
 2.08.2022 12:14:09
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 12:17:54
 Keyword not supported: 'ddata source'.
@@ -79,7 +79,7 @@ Keyword not supported: 'ddata source'.
 Keyword not supported: 'ddata source'.
 
 2.08.2022 12:19:04
-Veritabanı kaynaklı hata bulundu
+Veritabani kaynakli hata bulundu
 
 2.08.2022 14:22:04
 Baslik

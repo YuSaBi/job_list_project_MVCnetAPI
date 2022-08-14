@@ -24,6 +24,7 @@ namespace StajTest_2.Controllers
         }
         //public string cs = "Data Source=DESKTOP-SN2L41M;Database=StajProje_1;User Id=testt;Password=QWE123-asd456*;";
 
+
         [Authorize]
         [HttpGet]
         [Route("getir")]
@@ -46,24 +47,46 @@ namespace StajTest_2.Controllers
             
         }
 
+        [HttpPost]
+        [Route("Test_UserLogin")]
+        public async Task<ActionResult<string>> Test_UserLoginMng(User inputs)
+        {
+            string resp = "";
+            if (String.IsNullOrEmpty(inputs.UserName) || String.IsNullOrEmpty(inputs.UserPassword))
+            {
+                resp = "Zorunlu alanlari doldurunuz";
+            }
+            else
+            {
+                User item = new User();
+                SqlManager sql = new SqlManager(_configuration);
+
+                item.UserName = inputs.UserName;
+                item.UserPassword = inputs.UserPassword;
+
+                resp = sql.TestLogIn(item);
+            }
+            return Ok(resp);
+        }
+
         //[Authorize]
         [HttpPost]
         [Route("viewJobs")]
-        public jobListMaster JobGetir(int UserID)
+        public async Task<ActionResult<string>> JobGetir(UserId input)
         {
             int ResponseCode;
             jobListMaster jobListMaster = new jobListMaster();
-            if (UserID == 0)
+            if (input.UserID == 0)
             {
-                jobListMaster.ResponseMsg = "Zorunlu alanları doldurunuz";
+                jobListMaster.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 jobListMaster.ResponseCode = 202;
             }
             else
             {
                 SqlManager sql = new SqlManager(_configuration);
-                jobListMaster = sql.ViewJobs(UserID);
+                jobListMaster = sql.ViewJobs(input.UserID);
             }
-            return jobListMaster;
+            return Ok(jobListMaster);
         }
 
         /*
@@ -83,13 +106,13 @@ namespace StajTest_2.Controllers
         //[Authorize]
         [HttpPost]
         [Route("userRegister_Manager")]
-        public Response UserRegisterMng(string? UserName, string? UserPassword)
+        public async Task<ActionResult<string>> UserRegisterMng(User inputs)
         {
             
             Response resp = new Response();
-            if (String.IsNullOrEmpty(UserName) || String.IsNullOrEmpty(UserPassword))
+            if (String.IsNullOrEmpty(inputs.UserName) || String.IsNullOrEmpty(inputs.UserPassword))
             {
-                resp.ResponseMsg = "Zorunlu alanları doldurunuz";
+                resp.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 resp.ResponseCode = 202;
             }
             else
@@ -97,24 +120,24 @@ namespace StajTest_2.Controllers
                 User user = new User();
                 SqlManager sql = new SqlManager(_configuration);
 
-                user.UserName = UserName;
-                user.UserPassword = UserPassword;
+                user.UserName = inputs.UserName;
+                user.UserPassword = inputs.UserPassword;
 
                 resp = sql.AddUser(user);
             }
-            return resp;
+            return Ok(resp);
         }
 
 
         //[Authorize]
         [HttpPost]
         [Route("UserLogin_Manager")]
-        public ResponseUID UserLoginMng(string? UserName, string? UserPassword)
+        public async Task<ActionResult<string>> UserLoginMng(User inputs)
         {
             ResponseUID resp = new ResponseUID();
-            if (String.IsNullOrEmpty(UserName) || String.IsNullOrEmpty(UserPassword))
+            if (String.IsNullOrEmpty(inputs.UserName) || String.IsNullOrEmpty(inputs.UserPassword))
             {
-                resp.ResponseMsg = "Zorunlu alanları doldurunuz";
+                resp.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 resp.ResponseCode = 202;
             }
             else
@@ -122,72 +145,72 @@ namespace StajTest_2.Controllers
                 User item = new User();
                 SqlManager sql = new SqlManager(_configuration);
 
-                item.UserName = UserName;
-                item.UserPassword = UserPassword;
+                item.UserName = inputs.UserName;
+                item.UserPassword = inputs.UserPassword;
 
                 resp = sql.LogIn(item);
             }
-            return resp;
+            return Ok(resp);
         }
 
         //[Authorize]
         [HttpPost]
         [Route("deleteJob_Manager")]
-        public Response DeleteJobMng(int JobID)
+        public async Task<ActionResult<string>> DeleteJobMng(JobId input)
         {
             Response response = new Response();
-            if (JobID==0)
+            if (input.JobID==0)
             {
-                response.ResponseMsg = "Zorunlu alanları doldurunuz";
+                response.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 response.ResponseCode = 202;
             }
             else
             {
                 SqlManager sql = new SqlManager(_configuration);
 
-                response = sql.DelJob(JobID);
+                response = sql.DelJob(input.JobID);
             }
-            return response;
+            return Ok(response);
         }
 
         //[Authorize]
         [HttpPost]
         [Route("saveJob_Manager")]
-        public Response SaveJobMng(int UserID, string? Baslik, int HarcananSure, string? Detay, int CustomerID, int Durum, int PriorityID)
-        {
+        public async Task<ActionResult<string>> SaveJobMng(saveJob input)
+        {//int UserID, string? Baslik, int HarcananSure, string? Detay, int CustomerID, int Durum, int PriorityID
             Response resp = new Response();
-            if(UserID==0 || String.IsNullOrEmpty(Baslik) || String.IsNullOrEmpty(Detay) || CustomerID == 0)
+            if(input.UserID==0 || String.IsNullOrEmpty(input.Baslik) || String.IsNullOrEmpty(input.Detay) || input.CustomerID == 0)
             {
-                resp.ResponseMsg = "Zorunlu alanları doldurunuz";
+                resp.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 resp.ResponseCode = 202;
             }
             else
             {
                 SqlManager sql = new SqlManager(_configuration);
 
-                resp = sql.AddJob(UserID, Baslik, HarcananSure, Detay, CustomerID, Durum, PriorityID);
+                resp = sql.AddJob(input.UserID, input.Baslik, input.HarcananSure, input.Detay, input.CustomerID, input.Durum, input.PriorityID);
             }
-            return resp;
+            return Ok(resp);
         }
 
         //[Authorize]
         [HttpPost]
         [Route("userLastLoginUpdate_Manager")]
-        public Response UserLastLoginUpdate(int UserID)
+        public async Task<ActionResult<string>> UserLastLoginUpdate(UserId input)
         {
             Response resp = new Response();
-            if (UserID == 0)
+            if (input.UserID == 0)
             {
-                resp.ResponseMsg = "Zorunlu alanları doldurunuz";
+                resp.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 resp.ResponseCode = 202;
             }
             else
             {
                 SqlManager sql = new SqlManager(_configuration);
 
-                resp = sql.UserLastLoginUpdate(UserID);
+                resp = sql.UserLastLoginUpdate(input.UserID);
             }
-            return resp;
+            return Ok(resp);
         }
 
 
