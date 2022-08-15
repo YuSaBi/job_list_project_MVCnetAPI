@@ -20,6 +20,7 @@
 
     public class Jobs
     {
+        public int Id { get; set; }
         public string? Baslik { get; set; }
         public string? Detay { get; set; }
         public DateTime Gun { get; set; }

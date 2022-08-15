@@ -235,6 +235,7 @@ namespace StajTest_2.Manager
                         if (Convert.ToInt32(dr["ResponseCode"]) != 303)// veritabanından 303 dönerse kayıt bulunamadı demek
                         {
                             Jobs job = new Jobs();// tekli veri
+                            job.Id = Convert.ToInt32(dr["Id"]);
                             job.Baslik = dr["Baslik"].ToString();
                             job.Detay = dr["Detay"].ToString();
                             job.Gun = Convert.ToDateTime(dr["Gun"]);

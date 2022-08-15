@@ -74,7 +74,7 @@ namespace StajTest_2.Controllers
         [Route("viewJobs")]
         public async Task<ActionResult<string>> JobGetir(UserId input)
         {
-            int ResponseCode;
+            //int ResponseCode;
             jobListMaster jobListMaster = new jobListMaster();
             if (input.UserID == 0)
             {
