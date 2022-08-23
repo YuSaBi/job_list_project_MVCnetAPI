@@ -195,6 +195,25 @@ namespace StajTest_2.Controllers
 
         //[Authorize]
         [HttpPost]
+        [Route("editJob_Manager")]
+        public async Task<ActionResult<String>>EditJobMng(EditJob input)
+        {
+            int resp;
+            if(input.JobID == 0 || String.IsNullOrEmpty(input.Baslik) || String.IsNullOrEmpty(input.Detay) || input.CustomerID == 0)
+            {
+                resp = 202;
+            }
+            else
+            {
+                SqlManager sql = new SqlManager(_configuration);
+
+                resp = sql.EditJob(input.JobID, input.Baslik, input.HarcananSure, input.Detay, input.CustomerID, input.Durum, input.PriorityID);
+            }
+            return Ok(resp);
+        }
+
+        //[Authorize]
+        [HttpPost]
         [Route("userLastLoginUpdate_Manager")]
         public async Task<ActionResult<string>> UserLastLoginUpdate(UserId input)
         {

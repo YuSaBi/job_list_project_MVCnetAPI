@@ -156,6 +156,40 @@ namespace StajTest_2.Manager
             return resp;
         }
 
+        public int EditJob(int JobID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
+        {
+            int resp;
+            try
+            {
+                using (var connection = new SqlConnection(cs))
+                {
+                    var param = new DynamicParameters();
+                    param.Add("@JobID", JobID);
+                    param.Add("@Baslik", Baslik);
+                    param.Add("@HarcananSure", HarcananSure);
+                    param.Add("@Detay", Detay);
+                    param.Add("@CustomerID", CustomerID);
+                    param.Add("@DurumID", Durum);
+                    param.Add("@PriorityID", PriorityID);
+
+                    resp = connection.Query<int>("SP_EditJob", param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
+                resp = 239;
+            }
+            catch (Exception ex)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + ex.Message + "\n");
+                resp = 209;
+            }
+            return resp;
+        }
+
         public Response DelJob(int JobID)
         {
             Response resp = new Response();

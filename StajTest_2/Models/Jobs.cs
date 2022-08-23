@@ -46,4 +46,15 @@
         public int Durum { get; set; }
         public int PriorityID { get; set; }
     }
+
+    public class EditJob
+    {
+        public int JobID { get; set; }
+        public String? Baslik { get; set; }
+        public int HarcananSure { get; set; }
+        public String? Detay { get; set; }
+        public int CustomerID { get; set; }
+        public int Durum { get; set; }
+        public int PriorityID { get; set; }
+    }
 }

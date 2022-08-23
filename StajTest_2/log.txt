@@ -90,3 +90,7 @@ Baslik
 API SqlManager
 default hata mesajı
 
+17.08.2022 15:17:33
+API SqlManager
+default hata mesajı
+
