@@ -255,11 +255,10 @@ namespace StajTest_2.Manager
             jobListMaster jobListMaster = new jobListMaster();
             try
             {
-                int ResponseCode;
                 using (SqlConnection Con = new SqlConnection(cs))// SqlConnection bulamazsa SqlClient Expension yüklenmeli
                 {
                     SqlCommand cmd = new SqlCommand("SP_View", Con);// procedure ismi ve bağlantı girildi
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;// bir procedure oldugu için bunu SP olarak tipini belirliyoruz
+                    cmd.CommandType = CommandType.StoredProcedure;// bir procedure oldugu için bunu SP olarak tipini belirliyoruz
                     cmd.Parameters.AddWithValue("UserID", UserID);// oluşturulan parametre sql komutuna gönderiliyor
 
                     Con.Open();
@@ -306,6 +305,59 @@ namespace StajTest_2.Manager
                 jobListMaster.ResponseCode = 399;
             }
             return jobListMaster;
+        }
+
+        public MailResp ListReceivedMessage (int UserID)
+        {
+            MailResp resp = new MailResp();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(cs))
+                {
+                    SqlCommand cmd = new SqlCommand("SP_ListMails", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("UserID", UserID);
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        if (Convert.ToInt32(dr["ResponseCode"]) != 303)
+                        {
+                            Mail mail = new Mail();
+                            mail.MailFromID = Convert.ToInt32(dr["MailFromID"]);
+                            mail.MailFromName = dr["MailFromName"].ToString();
+                            mail.MailToID = Convert.ToInt32(dr["MailToID"]);
+                            mail.MailToName = dr["MailToName"].ToString();
+                            mail.Title = dr["Title"].ToString();
+                            mail.Message = dr["Message"].ToString();
+                            mail.IsImportant = Convert.ToBoolean(dr["IsImportant"]);
+                            mail.MailDateTime = Convert.ToDateTime(dr["MailDateTime"]);
+                            resp.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
+                            resp.mails.Add(mail);
+                        }
+                        else
+                        {
+                            resp.ResponseCode = 303;
+                        }
+                    }
+                    dr.Close();
+                    con.Close();
+                }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
+                resp.ResponseCode = 301;
+            }
+            catch (Exception ex)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + ex.Message + "\n");
+                resp.ResponseCode = 399;
+            }
+            return resp;
         }
 
 

@@ -94,3 +94,35 @@ default hata mesajı
 API SqlManager
 default hata mesajı
 
+6.09.2022 12:24:44
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:24:51
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:25:03
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:25:04
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:25:05
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:25:06
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:25:39
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
+6.09.2022 12:27:38
+API SqlManager
+Invalid attempt to call Read when reader is closed.
+
