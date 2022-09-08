@@ -12,13 +12,20 @@
     }
     public class Mail
     {
+        public int MailID { get; set; }
         public int MailFromID{ get; set; }
         public string? MailFromName { get; set; }
         public int MailToID { get; set; }
         public string? MailToName { get; set; }
         public string? Title{ get; set; }
         public string? Message{ get; set; }
-        public bool IsImportant { get; set; }
+        public bool IsRead { get; set; }
         public DateTime MailDateTime{ get; set; }
+    }
+    
+    public class MailIDRead
+    {
+        public int ID { get; set; }
+        public bool IsRead { get; set; }
     }
 }

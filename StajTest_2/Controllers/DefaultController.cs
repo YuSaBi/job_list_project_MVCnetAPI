@@ -175,6 +175,24 @@ namespace StajTest_2.Controllers
             return Ok(response);
         }
 
+        [HttpPost]
+        [Route("mailIsReadChange")]
+        public async Task<ActionResult<string>> MailIsReadUpdateMng(MailIDRead input)
+        {
+            Response response = new Response();
+            if (input.ID == 0)
+            {
+                response.ResponseCode = 202;
+            }
+            else
+            {
+                SqlManager sql = new SqlManager(_configuration);
+
+                response = sql.UpdateMailIsRead(input);
+            }
+            return Ok(response);
+        }
+
         //[Authorize]
         [HttpPost]
         [Route("saveJob_Manager")]

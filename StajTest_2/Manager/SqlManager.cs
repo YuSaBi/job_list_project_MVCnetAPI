@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.SqlClient;
 using StajTest_2.Models;
 using Dapper;
+using Microsoft.VisualBasic;
+using System.Security.Cryptography;
 
 namespace StajTest_2.Manager
 {
@@ -220,6 +222,50 @@ namespace StajTest_2.Manager
             return resp;
         }
 
+        public Response UpdateMailIsRead(MailIDRead input)
+        {
+            Response resp = new Response();
+            try
+            {
+                using (var con = new SqlConnection(cs))
+                {
+                    SqlCommand cmd = new SqlCommand("SP_MailUpdateIsRead",con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("ID", input.ID);
+                    cmd.Parameters.AddWithValue("IsRead", input.IsRead);
+
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        if (Convert.ToInt32(dr["ResponseCode"]) != 303)
+                        {
+                            resp.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
+                        }
+                        else
+                        {
+                            resp.ResponseCode = 303;
+                        }
+                    }
+                    dr.Close();
+                    con.Close();
+                }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
+                resp.ResponseCode = 301;
+            }
+            catch (Exception ex)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + ex.Message + "\n");
+                resp.ResponseCode = 399;
+            }
+            return resp;
+        }
+
         public Response UserLastLoginUpdate(int UserID)
         {
             Response resp = new Response();
@@ -325,13 +371,14 @@ namespace StajTest_2.Manager
                         if (Convert.ToInt32(dr["ResponseCode"]) != 303)
                         {
                             Mail mail = new Mail();
+                            mail.MailID = Convert.ToInt32(dr["ID"]);
                             mail.MailFromID = Convert.ToInt32(dr["MailFromID"]);
                             mail.MailFromName = dr["MailFromName"].ToString();
                             mail.MailToID = Convert.ToInt32(dr["MailToID"]);
                             mail.MailToName = dr["MailToName"].ToString();
                             mail.Title = dr["Title"].ToString();
                             mail.Message = dr["Message"].ToString();
-                            mail.IsImportant = Convert.ToBoolean(dr["IsImportant"]);
+                            mail.IsRead = Convert.ToBoolean(dr["IsRead"]);
                             mail.MailDateTime = Convert.ToDateTime(dr["MailDateTime"]);
                             resp.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
                             resp.mails.Add(mail);
