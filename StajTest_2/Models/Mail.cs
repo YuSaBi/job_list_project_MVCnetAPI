@@ -28,4 +28,12 @@
         public int ID { get; set; }
         public bool IsRead { get; set; }
     }
+
+    public class MailAdd
+    {
+        public int MailFromID { get; set; }
+        public int MailToID{ get; set; }
+        public string? Title { get; set; }
+        public string? Message{ get; set; }
+    }
 }

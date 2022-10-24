@@ -158,6 +158,45 @@ namespace StajTest_2.Manager
             return resp;
         }
 
+        public Response AddMail(MailAdd input)
+        {
+            Response resp = new Response();
+            try
+            {
+                using(var connection = new SqlConnection(cs))
+                {
+                    SqlCommand cmd = new SqlCommand("SP_AddMail", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("MailFromID", input.MailFromID);
+                    cmd.Parameters.AddWithValue("MailToID", input.MailToID);
+                    cmd.Parameters.AddWithValue("Title", input.Title);
+                    cmd.Parameters.AddWithValue("Message", input.Message);
+
+                    connection.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        resp.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
+                    }
+                    dr.Close();
+                    connection.Close();
+                }
+            }
+            catch (SqlException)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + logDbMessage + "\n");
+                resp.ResponseCode = 301;
+            }
+            catch (Exception ex)
+            {
+                LogManager log = new LogManager();
+                log.logNotepad(path, DateTime.Now + "\n" + "API SqlManager" + "\n" + ex.Message + "\n");
+                resp.ResponseCode = 399;
+            }
+            return resp;
+        }
+
         public int EditJob(int JobID, string Baslik, int HarcananSure, string Detay, int CustomerID, int Durum, int PriorityID)
         {
             int resp;
@@ -238,14 +277,7 @@ namespace StajTest_2.Manager
                     SqlDataReader dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
-                        if (Convert.ToInt32(dr["ResponseCode"]) != 303)
-                        {
-                            resp.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
-                        }
-                        else
-                        {
-                            resp.ResponseCode = 303;
-                        }
+                        resp.ResponseCode = Convert.ToInt32(dr["ResponseCode"]);
                     }
                     dr.Close();
                     con.Close();

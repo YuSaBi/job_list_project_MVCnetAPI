@@ -199,7 +199,7 @@ namespace StajTest_2.Controllers
         public async Task<ActionResult<string>> SaveJobMng(saveJob input)
         {//int UserID, string? Baslik, int HarcananSure, string? Detay, int CustomerID, int Durum, int PriorityID
             Response resp = new Response();
-            if(input.UserID==0 || String.IsNullOrEmpty(input.Baslik) || String.IsNullOrEmpty(input.Detay) || input.CustomerID == 0)
+            if(input.UserID==0 || string.IsNullOrEmpty(input.Baslik) || string.IsNullOrEmpty(input.Detay) || input.CustomerID == 0)
             {
                 resp.ResponseMsg = "Zorunlu alanlari doldurunuz";
                 resp.ResponseCode = 202;
@@ -209,6 +209,25 @@ namespace StajTest_2.Controllers
                 SqlManager sql = new SqlManager(_configuration);
 
                 resp = sql.AddJob(input.UserID, input.Baslik, input.HarcananSure, input.Detay, input.CustomerID, input.Durum, input.PriorityID);
+            }
+            return Ok(resp);
+        }
+
+        [HttpPost]
+        [Route("saveMail_Manager")]
+        public async Task<ActionResult<string>> SaveMailMng(MailAdd input)
+        {
+            Response resp = new Response();
+            if (input.MailFromID==0 || input.MailToID==0 || string.IsNullOrEmpty(input.Title) || string.IsNullOrEmpty(input.Message))
+            {
+                resp.ResponseMsg = "Zorunlu alanlari doldurunuz";
+                resp.ResponseCode = 202;
+            }
+            else
+            {
+                SqlManager sql = new SqlManager(_configuration);
+
+                resp = sql.AddMail(input);
             }
             return Ok(resp);
         }
